@@ -52,8 +52,8 @@ def check_answer(user_choice):
 
     if user_choice.lower() == correct_answer:
         game_state["score"] += 1
-        feedback = f"\u2705 Correct! {game_state['current_noun']['Word']} is {correct_answer} on page {game_state['page']}.
-                     Click 'Show the Noun' to continue."
+        feedback = f"""✅ Correct! {game_state['current_noun']['Word']} is {correct_answer} on page {game_state['page']}. Click 'Show the Noun' to continue."""
+
     else:
         # Add the noun back to the remaining list for retry
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
