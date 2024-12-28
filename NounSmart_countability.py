@@ -81,16 +81,20 @@ def get_page_summary():
 
 # Streamlit interface
 st.title("NounSmart: Countability")
-st.write("### Find the textbook page you selected and find out whether the noun is countable or not.")
+st.write("### Look at the textbook page you selected and find out whether the noun is countable or not.")
 
 # Input fields
 nickname = st.text_input("Enter your nickname:", key="nickname")
 page_choices = get_page_summary()
-page = st.selectbox("Select a page:", options=page_choices, key="page")
+page = st.selectbox("Select a page:", options=["Select a page..."] + page_choices, key="page")
 
-if nickname and page:
-    selected_page = int(page.split(" (")[0])  # Extract the page number
-    if st.button("Show the Noun"):
+if st.button("Start Game"):
+    if not nickname:
+        st.write("⛔ Please enter your nickname to start.")
+    elif page == "Select a page...":
+        st.write("⛔ Please select a page to start.")
+    else:
+        selected_page = int(page.split(" (")[0])  # Extract the page number
         if game_state["nickname"] != nickname or game_state["page"] != selected_page:
             reset_game_state()
             game_state["nickname"] = nickname
@@ -112,8 +116,4 @@ if nickname and page:
         st.write(noun)
         st.write("### Feedback and Score:")
         st.write(feedback)
-elif not nickname:
-    st.write("⛔ Please enter your nickname to start.")
-elif not page:
-    st.write("⛔ Please select a page to start.")
 
