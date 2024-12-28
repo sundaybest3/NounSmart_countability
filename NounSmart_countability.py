@@ -88,13 +88,12 @@ nickname = st.text_input("Enter your nickname:", key="nickname")
 page_choices = get_page_summary()
 page = st.selectbox("Select a page:", options=["Select a page..."] + page_choices, key="page")
 
-if st.button("Start Game"):
-    if not nickname:
-        st.write("⛔ Please enter your nickname to start.")
-    elif page == "Select a page...":
-        st.write("⛔ Please select a page to start.")
-    else:
-        selected_page = int(page.split(" (")[0])  # Extract the page number
+# Variables for controlling the flow
+show_noun_clicked = st.button("Show the Noun")
+
+if nickname and page and page != "Select a page...":
+    selected_page = int(page.split(" (")[0])  # Extract the page number
+    if show_noun_clicked:
         if game_state["nickname"] != nickname or game_state["page"] != selected_page:
             reset_game_state()
             game_state["nickname"] = nickname
@@ -105,15 +104,18 @@ if st.button("Start Game"):
             feedback = "Ready to continue!"
         st.write("### Noun:")
         st.write(noun)
-        st.write("### Feedback and Score:")
-        st.write(feedback)
+        st.session_state.current_noun = noun  # Save the noun for later
+        st.session_state.feedback = feedback  # Save feedback for later
 
-    user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
-    if st.button("Submit Answer"):
-        feedback = check_answer(user_choice)
-        noun = game_state["current_noun"]["Word"] if game_state["current_noun"] else ""
-        st.write("### Noun:")
-        st.write(noun)
-        st.write("### Feedback and Score:")
-        st.write(feedback)
+    if "current_noun" in st.session_state:
+        user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
+        if st.button("Submit Answer"):
+            feedback = check_answer(user_choice)
+            st.write("### Feedback and Score:")
+            st.write(feedback)
+elif not nickname:
+    st.write("⛔ Please enter your nickname to start.")
+elif page == "Select a page...":
+    st.write("⛔ Please select a page to start.")
+
 
