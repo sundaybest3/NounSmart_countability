@@ -100,7 +100,7 @@ if nickname and page and page != "Select a page...":
         else:
             noun = show_random_noun()
             feedback = "Ready to continue!"
-        st.write("### Noun:")
+        st.write("### Is this noun countable or uncountable?:")
         st.write(noun)
         st.session_state.current_noun = noun  # Save the noun for later
         st.session_state.feedback = feedback  # Save feedback for later
@@ -113,3 +113,4 @@ if nickname and page and page != "Select a page...":
             st.write(feedback)
 else:
     st.write("⛔ Please enter your nickname and select a page to start.")
+
