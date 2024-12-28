@@ -13,15 +13,18 @@ if missing_columns:
     raise ValueError(f"The following required columns are missing in the CSV: {', '.join(missing_columns)}")
 
 # Initialize game state
-game_state = {
-    "nickname": None,
-    "page": None,
-    "current_noun": None,
-    "remaining_nouns": None,
-    "total_nouns": 0,
-    "score": 0,
-    "trials": 0,
-}
+if "game_state" not in st.session_state:
+    st.session_state.game_state = {
+        "nickname": None,
+        "page": None,
+        "current_noun": None,
+        "remaining_nouns": None,
+        "total_nouns": 0,
+        "score": 0,
+        "trials": 0,
+    }
+
+game_state = st.session_state.game_state
 
 # Function to filter nouns by page and prepare the list of nouns
 def initialize_nouns(page):
@@ -46,7 +49,6 @@ def reset_game_state():
 def show_random_noun():
     if not game_state["remaining_nouns"]:
         return "No more nouns available. Click 'Submit Answer' to see your final feedback."
-
     game_state["current_noun"] = game_state["remaining_nouns"].pop()
     return game_state["current_noun"]["Word"]
 
@@ -54,7 +56,6 @@ def show_random_noun():
 def check_answer(user_choice):
     if not game_state.get("current_noun"):
         return "Please click 'Show the Noun' first."
-
     correct_answer = game_state["current_noun"]["Countability"].strip().lower()
     game_state["trials"] += 1
 
@@ -102,10 +103,9 @@ if nickname and page and page != "Select a page...":
             feedback = "Ready to continue!"
         st.write("### Is this noun countable or uncountable?:")
         st.write(noun)
-        st.session_state.current_noun = noun  # Save the noun for later
-        st.session_state.feedback = feedback  # Save feedback for later
+        st.session_state.feedback = feedback
 
-    if "current_noun" in st.session_state:
+    if "feedback" in st.session_state:
         user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
         if st.button("Submit Answer"):
             feedback = check_answer(user_choice)
