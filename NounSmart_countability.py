@@ -62,10 +62,10 @@ def check_answer(user_choice):
 
     if user_choice.lower() == correct_answer:
         game_state["score"] += 1
-        feedback = f"✅ Correct! {game_state['current_noun']['Word']} is {correct_answer}. Click 'Show the Noun' to continue."
+        feedback = f"✅ Correct! {game_state['current_noun']['Word']} is {correct_answer}."
     else:
         game_state["remaining_nouns"].insert(0, game_state["current_noun"])
-        feedback = f"❌ Incorrect. {game_state['current_noun']['Word']} is actually {correct_answer}. It will appear again. Click 'Show the Noun' to continue."
+        feedback = f"❌ Incorrect. {game_state['current_noun']['Word']} is actually {correct_answer}. It will appear again."
 
     # Check if all nouns are processed correctly
     if game_state["score"] == game_state["total_nouns"]:
@@ -106,15 +106,14 @@ if nickname and page and page != "Select a page...":
         st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{noun}</h1>", unsafe_allow_html=True)
         st.session_state.feedback = feedback
 
-    elif "current_noun" in st.session_state:
-        st.write("### Is this noun countable or uncountable?:")
-        st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
+    if "current_noun" in st.session_state:
         user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
         if st.button("Submit Answer"):
             feedback = check_answer(user_choice)
+            st.write("### Is this noun countable or uncountable?:")
+            st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
             st.write("### Feedback and Score:")
             st.write(feedback)
 else:
     st.write("⛔ Please enter your nickname and select a page to start.")
-
 
