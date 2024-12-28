@@ -68,7 +68,7 @@ def check_answer(user_choice):
 
     # Check if all nouns are processed correctly
     if game_state["score"] == game_state["total_nouns"]:
-        feedback += f"\n🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. Final Score: {game_state['score']} / {game_state['trials']} Choose another page for more practice."
+        feedback = f"\n🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. Final Score: {game_state['score']} / {game_state['trials']} Choose another page for more practice."
     else:
         feedback += f"\nCurrent Score: {game_state['score']} / {game_state['trials']}"
 
