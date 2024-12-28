@@ -88,12 +88,10 @@ nickname = st.text_input("Enter your nickname:", key="nickname")
 page_choices = get_page_summary()
 page = st.selectbox("Select a page:", options=["Select a page..."] + page_choices, key="page")
 
-# Variables for controlling the flow
-show_noun_clicked = st.button("Show the Noun")
-
 if nickname and page and page != "Select a page...":
     selected_page = int(page.split(" (")[0])  # Extract the page number
-    if show_noun_clicked:
+
+    if st.button("Show the Noun"):
         if game_state["nickname"] != nickname or game_state["page"] != selected_page:
             reset_game_state()
             game_state["nickname"] = nickname
@@ -113,9 +111,5 @@ if nickname and page and page != "Select a page...":
             feedback = check_answer(user_choice)
             st.write("### Feedback and Score:")
             st.write(feedback)
-elif not nickname:
-    st.write("⛔ Please enter your nickname to start.")
-elif page == "Select a page...":
-    st.write("⛔ Please select a page to start.")
-
-
+else:
+    st.write("⛔ Please enter your nickname and select a page to start.")
