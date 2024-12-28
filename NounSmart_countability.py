@@ -102,16 +102,19 @@ if nickname and page and page != "Select a page...":
         else:
             noun = show_random_noun()
             feedback = "Ready to continue!"
-        st.write("### Is this noun countable or uncountable?:")
-        st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{noun}</h1>", unsafe_allow_html=True)
+        st.session_state.current_noun = noun
         st.session_state.feedback = feedback
 
+    # Always display the current noun and question
     if "current_noun" in st.session_state:
-        user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
-        if st.button("Submit Answer"):
+        st.write("### Is this noun countable or uncountable?:")
+        st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
+
+    # Answer options
+    user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
+    if st.button("Submit Answer"):
+        if "current_noun" in st.session_state:
             feedback = check_answer(user_choice)
-            st.write("### Is this noun countable or uncountable?:")
-            st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
             st.write("### Feedback and Score:")
             st.write(feedback)
 else:
