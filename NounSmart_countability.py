@@ -50,6 +50,7 @@ def show_random_noun():
     if not game_state["remaining_nouns"]:
         return "No more nouns available. Click 'Submit Answer' to see your final feedback."
     game_state["current_noun"] = game_state["remaining_nouns"].pop()
+    st.session_state.current_noun = game_state["current_noun"]["Word"]  # Save noun in session state
     return game_state["current_noun"]["Word"]
 
 # Function to check user's answer
@@ -68,7 +69,7 @@ def check_answer(user_choice):
 
     # Check if all nouns are processed correctly
     if game_state["score"] == game_state["total_nouns"]:
-        feedback = f"\n🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. Final Score: {game_state['score']} / {game_state['trials']} Choose another page for more practice."
+        feedback = f"🎉 Great job, {game_state['nickname']}! All nouns have been answered correctly. Final Score: {game_state['score']} / {game_state['trials']} Choose another page for more practice."
     else:
         feedback += f"\nCurrent Score: {game_state['score']} / {game_state['trials']}"
 
@@ -101,14 +102,15 @@ if nickname and page and page != "Select a page...":
         else:
             noun = show_random_noun()
             feedback = "Ready to continue!"
-        st.write("### Is this noun countable or uncountable?:")
-        st.write(noun)
+        st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{noun}</h1>", unsafe_allow_html=True)
         st.session_state.feedback = feedback
 
     if "feedback" in st.session_state:
+        st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
         user_choice = st.radio("Your answer:", options=["Countable", "Uncountable"], key="user_choice")
         if st.button("Submit Answer"):
             feedback = check_answer(user_choice)
+            st.markdown(f"<h1 style='font-size:36px; font-weight:bold;'>{st.session_state.current_noun}</h1>", unsafe_allow_html=True)
             st.write("### Feedback and Score:")
             st.write(feedback)
 else:
