@@ -112,5 +112,8 @@ if nickname and page:
         st.write(noun)
         st.write("### Feedback and Score:")
         st.write(feedback)
-else:
-    st.write("⛔ Please enter your nickname and select a page to start.")
+elif not nickname:
+    st.write("⛔ Please enter your nickname to start.")
+elif not page:
+    st.write("⛔ Please select a page to start.")
+
